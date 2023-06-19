@@ -1,0 +1,10 @@
+{
+    "/": "HomeController@index",
+    "/dev/info": "UsuarioController@info",
+    "/cadastro": "UsuarioController@cadastro",
+    "/login": "UsuarioController@login",
+    "/perfil": "UsuarioController@perfil",
+    "/deslogar": "UsuarioController@deslogar",
+    "/excluir": "UsuarioController@excluir",
+    "/avatar": "UsuarioController@avatar"
+}
