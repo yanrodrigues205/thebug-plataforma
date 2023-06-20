@@ -29,8 +29,8 @@ h1::after {
 
 iframe {
     --padding: 20px;
-    max-width: calc(864px + var(--padding)*2);
-    max-height: calc(648px + var(--padding)*2);
+    max-width: calc(864px + var(--padding)*2); /* provavelmente aqui está bugando o jogo, fazer alterações para conferir */
+    max-height: calc(648px + var(--padding)*2); /* provavelmente aqui está bugando o jogo, fazer alterações para conferir */
     width: 100%;
     height: 100vh;
     display: block;
