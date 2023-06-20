@@ -10,15 +10,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/themes/all-hallows-eve.min.css" integrity="sha512-peJY+/qQiuxmZYt63iP3OSc0SGKcb0ADq6hPCLaQp6ATigGzn+4f/hYEEaa4d1PhGWYxW+3dDzEdmTM6ouUmwQ==" crossorigin="anonymous" defer referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rainbow/1.2.0/js/rainbow.min.js" integrity="sha512-1iwOtzgGTn5KiNhyTHdGh8IpixXZnsD0vRXUqNUgWqET4Uv3vDXuHq55cGjdJ+qNBL/HxH815N7qvLxgzA1dYw==" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <link rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
-
     <link rel="stylesheet" href="assets/css/index.css">
     <link rel="stylesheet" href="assets/css/home.css">
+    <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
 </head>
 
 <body>
@@ -100,8 +98,206 @@
         <p>Um exemplo comum de TAD é uma pilha. Uma pilha é uma estrutura de dados que segue o princípio LIFO (Last In, First Out), o que significa que o último elemento inserido é o primeiro a ser removido. Um TAD de pilha pode fornecer operações como "push" (inserir um elemento), "pop" (remover o último elemento) e "top" (obter o último elemento sem removê-lo).</p>
         <p>Ao usar um TAD, você pode se concentrar na utilização das operações disponíveis para manipular os dados sem se preocupar com a implementação interna. Isso promove a modularidade, a reutilização de código e a abstração, tornando o programa mais legível, manutenível e flexível.</p>
     </div>
+    <div style="padding: 10px"><pre><code>
+    using System;
 
-    
+    public abstract class AbstractDataStructure
+    {
+        public abstract void Add(int value);
+        public abstract bool Contains(int value);
+        public abstract void Remove(int value);
+        public abstract void Print();
+    }
+
+    public class ArrayDataStructure : AbstractDataStructure
+    {
+        private int[] array;
+        private int size;
+        private int capacity;
+
+        public ArrayDataStructure(int capacity)
+        {
+            this.capacity = capacity;
+            array = new int[capacity];
+            size = 0;
+        }
+
+        public override void Add(int value)
+        {
+            if (size < capacity)
+            {
+                array[size] = value;
+                size++;
+            }
+            else
+            {
+                Console.WriteLine("The array is full. Cannot add element.");
+            }
+        }
+
+        public override bool Contains(int value)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                if (array[i] == value)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public override void Remove(int value)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                if (array[i] == value)
+                {
+                    for (int j = i; j < size - 1; j++)
+                    {
+                        array[j] = array[j + 1];
+                    }
+                    size--;
+                    return;
+                }
+            }
+
+            Console.WriteLine("Element not found. Cannot remove.");
+        }
+
+        public override void Print()
+        {
+            for (int i = 0; i < size; i++)
+            {
+                Console.Write(array[i] + " ");
+            }
+
+            Console.WriteLine();
+        }
+    }
+
+    public class LinkedListDataStructure : AbstractDataStructure
+    {
+        private class Node
+        {
+            public int Value;
+            public Node Next;
+        }
+
+        private Node head;
+
+        public override void Add(int value)
+        {
+            Node newNode = new Node { Value = value };
+
+            if (head == null)
+            {
+                head = newNode;
+            }
+            else
+            {
+                Node current = head;
+
+                while (current.Next != null)
+                {
+                    current = current.Next;
+                }
+
+                current.Next = newNode;
+            }
+        }
+
+        public override bool Contains(int value)
+        {
+            Node current = head;
+
+            while (current != null)
+            {
+                if (current.Value == value)
+                {
+                    return true;
+                }
+
+                current = current.Next;
+            }
+
+            return false;
+        }
+
+        public override void Remove(int value)
+        {
+            if (head == null)
+            {
+                Console.WriteLine("The list is empty. Cannot remove element.");
+                return;
+            }
+
+            if (head.Value == value)
+            {
+                head = head.Next;
+                return;
+            }
+
+            Node current = head;
+
+            while (current.Next != null)
+            {
+                if (current.Next.Value == value)
+                {
+                    current.Next = current.Next.Next;
+                    return;
+                }
+
+                current = current.Next;
+            }
+
+            Console.WriteLine("Element not found. Cannot remove.");
+        }
+
+        public override void Print()
+        {
+            Node current = head;
+
+            while (current != null)
+            {
+                Console.Write(current.Value + " ");
+                current = current.Next;
+            }
+
+            Console.WriteLine();
+        }
+    }
+
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            AbstractDataStructure dataStructure;
+
+            // Using ArrayDataStructure
+            dataStructure = new ArrayDataStructure(5);
+            dataStructure.Add(10);
+            dataStructure.Add(20);
+            dataStructure.Add(30);
+            dataStructure.Print(); // Output: 10 20 30
+
+            // Using LinkedListDataStructure
+            dataStructure = new LinkedListDataStructure();
+            dataStructure.Add(5);
+            dataStructure.Add(15);
+            dataStructure.Add(25);
+            dataStructure.Print(); // Output: 5 15 25
+        }
+    }
+
+    </pre></code></div>
+    <div class="container text-white px-4">
+        <p>Neste exemplo, a classe AbstractDataStructure é uma classe abstrata que define as operações básicas de uma estrutura de dados genérica, como adicionar (Add), verificar se contém um elemento (Contains), remover um elemento (Remove) e imprimir a estrutura (Print). Essas operações são declaradas como métodos abstratos, o que significa que a implementação deve ser fornecida pelas classes derivadas.</p>
+        <p>A classe ArrayDataStructure e LinkedListDataStructure são subclasses que estendem AbstractDataStructure e fornecem implementações específicas para as operações da estrutura de dados usando um array e uma lista encadeada simples, respectivamente.</p>
+        <p>No método Main, demonstramos como criar instâncias de ambas as subclasses e usar as operações definidas pela classe abstrata AbstractDataStructure para adicionar elementos, verificar se contém um valor, remover um valor e imprimir a estrutura resultante.</p>
+        <hr>
+    </div>
 
     <div class="container text-white px-4" id="simples">
         <h4>O Que É uma Lista Simplismente Encadeadas?</h4>
@@ -112,6 +308,131 @@
         <p>No entanto, uma limitação da lista simplesmente encadeada é que a busca por um elemento específico pode ser menos eficiente. Para encontrar um valor desejado, é necessário percorrer a lista sequencialmente, começando pelo nó inicial e seguindo os ponteiros até encontrar o elemento desejado. Esse processo pode ser demorado em listas grandes ou quando a posição do elemento é desconhecida.</p>
         <p>Apesar dessa desvantagem, a lista simplesmente encadeada continua sendo uma estrutura de dados poderosa e amplamente utilizada. Sua flexibilidade, eficiência na inserção e remoção, e a capacidade de acomodar tamanhos variáveis de dados a tornam uma escolha popular em muitas aplicações. Compreender os conceitos e operações envolvidos nas listas simplesmente encadeadas é fundamental para um desenvolvedor eficiente e eficaz.</p>
     </div>
+
+    <div style="padding: 10px"><pre><code>
+    using System;
+
+    public class Node
+    {
+        public int Value;
+        public Node Next;
+    }
+
+    public class SinglyLinkedList
+    {
+        private Node head;
+
+        public void AddFirst(int value)
+        {
+            Node newNode = new Node { Value = value };
+
+            if (head == null)
+            {
+                head = newNode;
+            }
+            else
+            {
+                newNode.Next = head;
+                head = newNode;
+            }
+        }
+
+        public void AddLast(int value)
+        {
+            Node newNode = new Node { Value = value };
+
+            if (head == null)
+            {
+                head = newNode;
+            }
+            else
+            {
+                Node current = head;
+
+                while (current.Next != null)
+                {
+                    current = current.Next;
+                }
+
+                current.Next = newNode;
+            }
+        }
+
+        public void RemoveFirst()
+        {
+            if (head == null)
+            {
+                Console.WriteLine("The list is empty.");
+                return;
+            }
+
+            head = head.Next;
+        }
+
+        public void RemoveLast()
+        {
+            if (head == null)
+            {
+                Console.WriteLine("The list is empty.");
+                return;
+            }
+
+            if (head.Next == null)
+            {
+                head = null;
+                return;
+            }
+
+            Node current = head;
+
+            while (current.Next.Next != null)
+            {
+                current = current.Next;
+            }
+
+            current.Next = null;
+        }
+
+        public void PrintList()
+        {
+            Node current = head;
+
+            while (current != null)
+            {
+                Console.Write(current.Value + " ");
+                current = current.Next;
+            }
+
+            Console.WriteLine();
+        }
+    }
+
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            SinglyLinkedList list = new SinglyLinkedList();
+
+            list.AddLast(10);
+            list.AddLast(20);
+            list.AddFirst(5);
+            list.AddLast(30);
+
+            list.PrintList(); // Output: 5 10 20 30
+
+            list.RemoveFirst();
+            list.RemoveLast();
+
+            list.PrintList(); // Output: 10 20
+        }
+    }
+        </code></pre></div>
+
+        <div class="container text-white px-4">
+            <p>Neste exemplo, a classe Node representa um nó da lista simplesmente encadeada, contendo um valor e um ponteiro Next que aponta para o próximo nó da lista. A classe SinglyLinkedList implementa as operações básicas, como adicionar no início (AddFirst), adicionar no final (AddLast), remover do início (RemoveFirst), remover do final (RemoveLast) e imprimir a lista (PrintList).</p>
+            <p>No método Main, são realizadas algumas operações de exemplo, como adicionar elementos, remover elementos e imprimir a lista resultante.</p>
+            <hr>
+        </div>
 
     <div class="container text-white px-4" id="dupla">
         <h4>O Que É uma Lista Duplamente Encadeadas?</h4>
@@ -124,11 +445,130 @@
         <p>Compreender os conceitos e operações da lista duplamente encadeada é essencial para os desenvolvedores que desejam aproveitar ao máximo essa estrutura de dados versátil e poderosa.</p>
    </div>
 
-   <pre><code class="c#">
-    public function yan(){}
-   </code></pre>
-   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js" defer></script>
+    <div style="padding: 10px"><pre><code>
+    using System;
+
+    public class Node
+    {
+        public int Value;
+        public Node Next;
+        public Node Previous;
+    }
+
+    public class DoublyLinkedList
+    {
+        private Node head;
+        private Node tail;
+
+        public void AddFirst(int value)
+        {
+            Node newNode = new Node { Value = value };
+
+            if (head == null)
+            {
+                head = newNode;
+                tail = newNode;
+            }
+            else
+            {
+                newNode.Next = head;
+                head.Previous = newNode;
+                head = newNode;
+            }
+        }
+
+        public void AddLast(int value)
+        {
+            Node newNode = new Node { Value = value };
+
+            if (head == null)
+            {
+                head = newNode;
+                tail = newNode;
+            }
+            else
+            {
+                newNode.Previous = tail;
+                tail.Next = newNode;
+                tail = newNode;
+            }
+        }
+
+        public void RemoveFirst()
+        {
+            if (head == null)
+            {
+                Console.WriteLine("The list is empty.");
+                return;
+            }
+
+            head = head.Next;
+
+            if (head == null)
+                tail = null;
+            else
+                head.Previous = null;
+        }
+
+        public void RemoveLast()
+        {
+            if (tail == null)
+            {
+                Console.WriteLine("The list is empty.");
+                return;
+            }
+
+            tail = tail.Previous;
+
+            if (tail == null)
+                head = null;
+            else
+                tail.Next = null;
+        }
+
+        public void PrintList()
+        {
+            Node current = head;
+
+            while (current != null)
+            {
+                Console.Write(current.Value + " ");
+                current = current.Next;
+            }
+
+            Console.WriteLine();
+        }
+    }
+
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            DoublyLinkedList list = new DoublyLinkedList();
+
+            list.AddLast(10);
+            list.AddLast(20);
+            list.AddFirst(5);
+            list.AddLast(30);
+
+            list.PrintList(); // Output: 5 10 20 30
+
+            list.RemoveFirst();
+            list.RemoveLast();
+
+            list.PrintList(); // Output: 10 20
+        }
+    }
+
+        </code></pre></div>
+
+        <div class="container text-white px-4">
+            <p>Neste exemplo, a classe Node representa um nó da lista duplamente encadeada, contendo um valor e dois ponteiros: Next (aponta para o próximo nó) e Previous (aponta para o nó anterior). A classe DoublyLinkedList implementa as operações básicas, como adicionar no início (AddFirst), adicionar no final (AddLast), remover do início (RemoveFirst), remover do final (RemoveLast) e imprimir a lista (PrintList).</p>
+            <p>No método Main, são realizadas algumas operações de exemplo, como adicionar elementos, remover elementos e imprimir a lista resultante.</p>
+        <hr>
+        </div>
     <script>
+        hljs.initHighlightingOnLoad();
         function resizeIframe(obj) {
             // ...
         }
