@@ -21,6 +21,8 @@ class QuizController extends BaseController
     public function verificarResposta()
     {
         $opcao_escolhida = $_POST["opcao_escolhida"];
-        header("location:../quiz?opcao=$opcao_escolhida");
+        $resposta_correta = rand(1, 4);
+        $acertou_resposta = ($opcao_escolhida == $resposta_correta ? 1 : 0);
+        header("location:../quiz?opcao=$opcao_escolhida&acertou=$acertou_resposta");
     }
 }
