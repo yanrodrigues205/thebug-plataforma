@@ -29,7 +29,7 @@ if ($rotas === null) {
 // remove a última barra das rotas, por exemplo: http://localhost:80/conta/editar/ => http://localhost:80/conta/editar
 $urlBase = str_replace('/index.php', '', $_SERVER['SCRIPT_NAME']);
 
-$uriRequisitada = $_SERVER['REQUEST_URI'];
+[$uriRequisitada, $params] = explode('?', $_SERVER['REQUEST_URI']);
 $rtrimUriRequisitada = rtrim($uriRequisitada, '/');
 
 if ($urlBase != $rtrimUriRequisitada && substr($uriRequisitada, -1) == '/') {
