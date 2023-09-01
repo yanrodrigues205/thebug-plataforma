@@ -7,6 +7,18 @@
     <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon" />
     <title>Quiz</title>
     <link rel="stylesheet" href="assets/index.css">
+    
+    <style>
+        .correta {
+            background: blue;
+            color: #fff;
+        }
+
+        .errada {
+            background: red;
+            color: #fff;
+        }
+    </style>
 </head>
 
 <body>
@@ -17,11 +29,16 @@
 
         <form action="quiz/resultado" method="POST">
             <input id="opcao_escolhida" name="opcao_escolhida" type="hidden" value="" />
-            <input class="option" type="button" value="Opção 1" data-value="1" />
-            <input class="option" type="button" value="Opção 2" data-value="2" />
-            <input class="option" type="button" value="Opção 3" data-value="3" />
-            <input class="option" type="button" value="Opção 4" data-value="4" />
+            <?php foreach ($view_options as $option) echo $option; ?>
         </form>
+
+        <?php 
+            if ($view_proximo == true) {
+        ?>
+                <button onclick="window.location.href='quiz'">Próximo</button>
+        <?php 
+            }
+        ?>
     </center>
 
     <script>
