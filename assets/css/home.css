@@ -38,8 +38,12 @@ iframe {
     padding: var(--padding);
 }
 
-@keyframes pisca {
+.carousel {
+    max-width: 1400px;
+    margin: 0 auto;
+}
 
+@keyframes pisca {
     0%,
     100% {
         opacity: 1;
