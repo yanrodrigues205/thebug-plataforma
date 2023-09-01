@@ -6,5 +6,7 @@
     "/perfil": "UsuarioController@perfil",
     "/deslogar": "UsuarioController@deslogar",
     "/excluir": "UsuarioController@excluir",
-    "/avatar": "UsuarioController@avatar"
+    "/avatar": "UsuarioController@avatar",
+    "/quiz": "QuizController@index",
+    "/quiz/resultado": "QuizController@verificarResposta"
 }
