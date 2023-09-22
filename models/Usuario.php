@@ -85,6 +85,23 @@ class Usuario
         return $resultado;
     }
 
+    public function saveAvatar($conn, $img){
+        $resultado = $conn->execute(
+            "UPDATE usuario SET usu_avatar = '$img' WHERE usu_id = ? ",[$this->id]
+        );
+        return $resultado;
+    }
+    
+    public function getAvatar($conn){
+        $resultado = $conn->fetch(
+            "SELECT usu_avatar FROM usuario WHERE usu_id = ? ",[$this->id]
+        );
+        return $resultado;
+    }
+
+    
+    
+    
     /** @param BancoDeDados $conn */
     public function excluir($conn)
     {
