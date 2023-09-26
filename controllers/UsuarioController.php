@@ -102,7 +102,8 @@ class UsuarioController extends BaseController
     {
         $conn = $this->conectarBD();
         $session = new Session();
-        $usuario_logado = $this->garantirUsuarioLogado($conn, $session);
+        $usuario_logado = new Usuario("huggon", "12345678", "hug@email.com", UUID::gerar());
+        //$usuario_logado = $this->garantirUsuarioLogado($conn, $session);
         $view_usuario_deslogado = $usuario_logado->getLogin(); // $login é usado na mensagem de deslogamento
         $session->setarUsuarioLogado(null);
 
