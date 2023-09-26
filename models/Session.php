@@ -24,7 +24,7 @@ class Session
     /**
      * @param BancoDeDados $conn 
      * @return Usuario|null 
-     * */
+     **/
     public function obterUsuarioLogado($conn)
     {
         $usuario_id = Session::get(Session::$USUARIO_LOGADO);
@@ -44,6 +44,15 @@ class Session
         $usuario_logado = new Usuario($data["usu_login"], $data["usu_senha"], $data["usu_email"], $data["usu_id"]);
 
         return $usuario_logado;
+    }
+
+    public function setCache($key, $value) {
+        if (is_null($value)) Session::remove("CACHE::$key");
+        else Session::set("CACHE::$key", $value);
+    }
+
+    public function getCache($key, $default = null) {
+        return Session::get("CACHE::$key", $default);
     }
 
     public static function destroy()

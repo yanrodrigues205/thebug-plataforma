@@ -8,5 +8,5 @@
     "/excluir": "UsuarioController@excluir",
     "/avatar": "UsuarioController@avatar",
     "/quiz": "QuizController@index",
-    "/quiz/resultado": "QuizController@verificarResposta"
+    "/-/quiz": "QuizController@verificarResposta"
 }
