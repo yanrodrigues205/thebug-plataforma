@@ -158,42 +158,27 @@ class UsuarioController extends BaseController
                 header("location:login");
             }
 
-            $avatar_file = $_FILES["avatar"];
-            //YAN PRECISA CONCLUIR ESTA PARTE
-            // $error = $avatar_file["error"];
+           
+            $imagemTmp = file_get_contents($_FILES["avatar"]["tmp_name"]);
+            $imagemBase64 = base64_encode($imagemTmp);
 
-            // if ($error == UPLOAD_ERR_OK) {
-            //     $tmp_name = $avatar_file["tmp_name"];
-            //     $name = $avatar_file["name"];
+            $usuario_logado->saveAvatar($conn, $imagemBase64);
 
-            //     $path = str_replace('\\', '/', move_uploaded_file($tmp_name, getcwd() . "/tmp/$name"));
-            //     echo "path: $path";
+            header("location:perfil");
 
-            //     if ($path) {
-            //         echo "sim";
-            //     } else {
-            //         echo "nao";
-            //     }
-            //     echo "<br/>";
-            //     var_dump($avatar_file);
-            // } else {
-            //     echo "DE JEITO NENHGUM";
-            // }
-            // echo "<br/>";
-            // echo getcwd() . "/tmp/" . $name;
-            echo "POST";
-            exit;
+
+            
         } else if ($this->requestIsGET()) {
-            // pega o aquivo
-            echo "GET";
-            exit;
+            $resultado = $usuario_logado->getAvatar($conn);
+            var_dump($resultado->value);
+            
         } else if ($this->requestIsDELETE()) {
             // deleta o arquivo
             echo "DELETE";
-            exit;
         }
-
+else {
         echo "O método da requisição precisa ser GET, POST ou DELETE";
+}
     }
 
     /** 

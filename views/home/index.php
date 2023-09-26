@@ -41,7 +41,7 @@
 
             <div>
                 <?php if ($view_usuario_logado) { ?>
-                    <a href="perfil"><img src=" https://picsum.photos/50" style="border-radius:50%;"></a>&nbsp;
+                    <a href="perfil"><img src="/avatar" style="border-radius:50%;"></a>&nbsp;
                     <a style="color:#fff" href="deslogar">Sair</a>
                 <?php } else { ?>
                     <a style="color:#fff" href="login">Entrar</a>&nbsp;
