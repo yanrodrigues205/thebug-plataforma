@@ -44,6 +44,33 @@ class Quiz
 
     /** 
      * @param BancoDeDados $conn 
+     * @param string $user_id
+     **/
+    public static function buscarTodosIdsDisponiveis($conn, $user_id)
+    {
+        $resultado = $conn->fetchAll(
+            "SELECT q.q_id
+                FROM quiz q
+                LEFT JOIN quiz_resposta qr ON qr.q_id = q.q_id AND qr.usu_id = ?
+                WHERE qr.qr_id IS NULL;
+            ", [$user_id]);
+        
+        if ($resultado->isLeft()) {
+            return Resultado::esq($resultado->value);
+        }
+
+        $opcao_ids = array();
+        $data = $resultado->value;
+
+        foreach ($data as $d) {
+            array_push($opcao_ids, $d["q_id"]);
+        }
+
+        return Resultado::dir($opcao_ids);
+    } 
+
+    /** 
+     * @param BancoDeDados $conn 
      * @param string $id */
     public static function buscarPorId($conn, $id) 
     {

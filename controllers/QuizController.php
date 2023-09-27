@@ -37,10 +37,16 @@ class QuizController extends BaseController
             $view_quiz = $quiz->value;
         }
         else {
-            $quiz_id_list = Quiz::buscarTodosIds($conn);
+            $quiz_id_list = Quiz::buscarTodosIdsDisponiveis($conn, $view_usuario_logado->getId());
             
             if ($quiz_id_list->isLeft()) {
-                $view_error = "Não foi possível obter as perguntas.";
+                $view_error = "Não foi possível obter as perguntas. ";
+                include $view;
+                return;
+            }
+
+            if (count($quiz_id_list->value) == 0) {
+                $view_error = "Não há mais perguntas disponíveis. <a href='.'>Ir para a home</a>";
                 include $view;
                 return;
             }
@@ -51,7 +57,7 @@ class QuizController extends BaseController
             if ($quiz->isLeft()) {
                 $view_error = "Não foi possível obter informações do Quiz.";
                 include $view;
-                exit;
+                return;
             }
 
             $view_quiz = $quiz->value;
@@ -68,11 +74,12 @@ class QuizController extends BaseController
     {
         $conn = $this->conectarBD();
         $session = new Session();
+        $usuario_logado = $session->obterUsuarioLogado($conn);
         $ultimo_quiz = Quiz::buscarPorId($conn, $session->getCache("quiz_id"));
 
         if ($ultimo_quiz->isLeft() || !isset($_POST["opcao_escolhida"])) {
             header("location:../quiz");
-            exit;
+            return;
         }
 
         $opcao_escolhida = $_POST["opcao_escolhida"];
@@ -80,6 +87,8 @@ class QuizController extends BaseController
         
         $session->setCache("opcao_escolhida", $opcao_escolhida);
         $session->setCache("acertou_resposta", $acertou_resposta);
+
+        Usuario::salvarRespostaQuiz($conn, $session->getCache("quiz_id"), $usuario_logado->getId(), $acertou_resposta);
 
         header("location:../quiz");
     }
