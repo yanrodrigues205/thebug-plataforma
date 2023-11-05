@@ -24,6 +24,7 @@
                     <th>Login</th>
                     <th>Senha</th>
                     <th>Email</th>
+                    <th>Pontuação Quiz</th>
                 </tr>
             </thead>
 
@@ -35,6 +36,7 @@
                         <td>" . $view_usuario_logado->getLogin() . "</td>
                         <td>" . $view_usuario_logado->getSenha() . "</td>
                         <td>" . $view_usuario_logado->getEmail() . "</td>
+                        <td><center>" . $view_quiz_pontos . "</center></td>
                         <td><a href='deslogar'>Deslogar</a></td>
                         <td><a href='javascript:excluirConta()'>Excluir</a></td>
                     ";
@@ -50,6 +52,12 @@
             <input type="file" name="avatar" accept="image/*" />
             <input type="submit" value="Salvar" />
         </form>
+
+        <div style="margin-top:25px;">
+            <a href="quiz">
+                <h1>Ir para o quiz</h1>
+            </a>
+        </div>
     </center>
 
     <script>

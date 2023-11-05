@@ -14,8 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="assets/css/index.css">
     <link rel="stylesheet" href="assets/css/home.css">
-    <link rel="stylesheet"
-      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
 </head>
 
@@ -41,7 +40,7 @@
 
             <div>
                 <?php if ($view_usuario_logado) { ?>
-                    <a href="perfil"><img src="/avatar" style="border-radius:50%;"></a>&nbsp;
+                    <a href="perfil"><img src="https://picsum.photos/60" style="border-radius:50%;"></a>&nbsp;
                     <a style="color:#fff" href="deslogar">Sair</a>
                 <?php } else { ?>
                     <a style="color:#fff" href="login">Entrar</a>&nbsp;

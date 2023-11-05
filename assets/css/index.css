@@ -7,3 +7,7 @@ body {
     margin-bottom: 10px;
     font-family: system-ui;
 }
+
+td {
+    padding: 10px;
+}

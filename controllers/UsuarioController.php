@@ -94,7 +94,13 @@ class UsuarioController extends BaseController
         $conn = $this->conectarBD();
         $session = new Session();
         $view_usuario_logado = $this->garantirUsuarioLogado($conn, $session);
-
+        $quiz_pontos = Usuario::buscarPontosQuiz($conn, $view_usuario_logado->getId());
+        $view_quiz_pontos = 0;
+        
+        if ($quiz_pontos->isRight()) {
+            $view_quiz_pontos = $quiz_pontos->value["pontos"];
+        }
+        
         include 'views/usuarios/perfil.php';
     }
 
@@ -158,7 +164,6 @@ class UsuarioController extends BaseController
             if (!$usuario_logado) {
                 header("location:login");
             }
-
            
             $imagemTmp = file_get_contents($_FILES["avatar"]["tmp_name"]);
             $imagemBase64 = base64_encode($imagemTmp);
@@ -166,20 +171,18 @@ class UsuarioController extends BaseController
             $usuario_logado->saveAvatar($conn, $imagemBase64);
 
             header("location:perfil");
-
-
             
         } else if ($this->requestIsGET()) {
             $resultado = $usuario_logado->getAvatar($conn);
-            var_dump($resultado->value);
+            var_dump($resultado);
             
         } else if ($this->requestIsDELETE()) {
             // deleta o arquivo
             echo "DELETE";
         }
-else {
-        echo "O método da requisição precisa ser GET, POST ou DELETE";
-}
+        else {
+                echo "O método da requisição precisa ser GET, POST ou DELETE";
+        }
     }
 
     /** 

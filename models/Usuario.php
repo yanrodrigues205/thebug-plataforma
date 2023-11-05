@@ -73,6 +73,36 @@ class Usuario
 
         return Resultado::dir($usuario);
     }
+    
+    /** 
+     * @param BancoDeDados $conn 
+     * @param string $user_id
+     * */
+    public static function buscarPontosQuiz($conn, $user_id) {
+        $resultado = $conn->fetch(
+            "SELECT count(*) as pontos FROM quiz_resposta qr
+                LEFT OUTER JOIN usuario u ON u.usu_id = qr.usu_id AND qr_acertou = true
+                WHERE u.usu_id = ?",
+            [$user_id]
+        );
+
+        return $resultado;
+    }
+
+    /** 
+     * @param BancoDeDados $conn 
+     * @param string $quiz_id
+     * @param string $user_id
+     **/
+    public static function salvarRespostaQuiz($conn, $quiz_id, $user_id, $acertou)
+    {
+        $resultado = $conn->execute(
+            "INSERT INTO quiz_resposta (qr_id, q_id, usu_id, qr_acertou) VALUES (?, ?, ?, ?)",
+            [UUID::gerar(), $quiz_id, $user_id, $acertou]
+        );
+
+        return $resultado;
+    }
 
     /** @param BancoDeDados $conn */
     public function salvar($conn)
@@ -85,6 +115,10 @@ class Usuario
         return $resultado;
     }
 
+    /** 
+     * @param BancoDeDados $conn
+     * @param string $img
+     * */
     public function saveAvatar($conn, $img){
         $resultado = $conn->execute(
             "UPDATE usuario SET usu_avatar = '$img' WHERE usu_id = ? ",[$this->id]
@@ -92,15 +126,18 @@ class Usuario
         return $resultado;
     }
     
+    /** @param BancoDeDados $conn */
     public function getAvatar($conn){
         $resultado = $conn->fetch(
             "SELECT usu_avatar FROM usuario WHERE usu_id = ? ",[$this->id]
         );
+
+        if ($resultado->isLeft()) {
+            return Resultado::esq("Usuário não tem avatar");
+        }
+        
         return $resultado;
     }
-
-    
-    
     
     /** @param BancoDeDados $conn */
     public function excluir($conn)
