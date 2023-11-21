@@ -9,7 +9,7 @@ class BaseController
     {
         if ($bd == null) $bd = "thebug";
         if ($user == null) $user = "root";
-        if ($password == null) $password = "root";
+        if ($password == null) $password = "";
         if ($host == null) $host = "127.0.0.1";
 
         return new BancoDeDados($host, $user, $password, $bd);
